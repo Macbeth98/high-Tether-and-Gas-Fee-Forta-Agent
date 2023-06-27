@@ -1,9 +1,4 @@
-import {
-  Finding,
-  TransactionEvent,
-  getTransactionReceipt,
-  ethers,
-} from "forta-agent";
+import { Finding, TransactionEvent, getTransactionReceipt, ethers } from 'forta-agent';
 
 import * as highTetherAgent from './high.tether';
 import * as highGasFeeAgent from './high.gas.fee';
@@ -11,26 +6,26 @@ import * as highGasFeeAgent from './high.gas.fee';
 let findingsCount = 0;
 
 function provideHandleTransaction(highGasFeeAgent: any, highTetherAgent: any, getTransactionReceipt: any) {
-  return async function handleTransaction (txEvent: TransactionEvent) {
+  return async function handleTransaction(txEvent: TransactionEvent) {
     let findings: Finding[] = [];
-  
+
     // if (findingsCount > 5) {
     //   console.log("Greater than five findings...............");
     //   return findings;
     // }
-  
+
     const { gasUsed } = await getTransactionReceipt(txEvent.hash);
     findings = (
       await Promise.all([
         highTetherAgent.handleTransaction(txEvent),
-        highGasFeeAgent.handleTransaction(txEvent, ethers.BigNumber.from(gasUsed))
+        highGasFeeAgent.handleTransaction(txEvent, ethers.BigNumber.from(gasUsed)),
       ])
     ).flat();
-  
+
     findingsCount += findings.length;
-  
+
     return findings;
-  }
+  };
 }
 
 export default {
@@ -40,12 +35,6 @@ export default {
   // handleBlock,
   // handleAlert
 };
-
-
-
-
-
-
 
 // export const ERC20_TRANSFER_EVENT =
 //   "event Transfer(address indexed from, address indexed to, uint256 value)";

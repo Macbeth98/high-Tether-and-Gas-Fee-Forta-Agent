@@ -1,5 +1,5 @@
 interface PriceGetter {
-  getPrice: () => Promise<number>
+  getPrice: () => Promise<number>;
 }
 
 export default PriceGetter;
